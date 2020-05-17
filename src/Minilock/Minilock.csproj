@@ -4,4 +4,8 @@
         <TargetFramework>netcoreapp3.1</TargetFramework>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Minilock.Providers.Core\Minilock.Providers.Core.csproj" />
+    </ItemGroup>
+
 </Project>
