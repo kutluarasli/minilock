@@ -27,50 +27,46 @@ namespace Minilock.Tests
         {
             //Arrange
 
-            var isMasterNow = false;
-                
-            _provider.Setup(provider => provider.Lock(_clusterInformation.ClusterName, _clusterInformation.HostName))
-                .Returns(true);
+            _provider.Setup(provider => provider.LockAsync(_clusterInformation.ClusterName))
+                .ReturnsAsync(new LockReference(true));
 
             //Act
-            _sut.ClusterStatusChanged += (sender, args) => isMasterNow = args.IsMaster; 
             _sut.Start();
 
+            //Assert
+            _sut.IsMaster.Should().BeTrue();
+        }
+        
+        [Test]
+        public void It_Should_Notify_When_ClusterStatusChanged()
+        {
+            //Arrange
+
+            var isNotified = false;
+
+            _provider.Setup(provider => provider.LockAsync(_clusterInformation.ClusterName))
+                .ReturnsAsync(new LockReference(true));
+
+            //Act
+            _sut.ClusterStatusChanged += (sender, args) => isNotified = true;
+            _sut.Start();
 
             //Assert
-            isMasterNow.Should().BeTrue();
+            isNotified.Should().BeTrue();
         }
 
         [Test]
         public void It_Should_Remain_SlaveRole_When_Lock_Is_Not_Available()
         {
             //Arrange
-            var isMasterNow = false;
-            
-            _provider.Setup(provider => provider.Lock(_clusterInformation.ClusterName, _clusterInformation.HostName))
-                .Returns(false);
-
-            //Act
-            _sut.ClusterStatusChanged += (sender, args) => isMasterNow = args.IsMaster;
-            _sut.Start();
-
-            //Assert
-            isMasterNow.Should().BeFalse();
-        }
-
-        [Test]
-        public void It_Should_Try_To_Claim_MasterRole_When_Lock_Is_Released_By_AnotherHost()
-        {
-            //Arrange
-            var eventArgs = new LockReleasedEventArgs(_clusterInformation.ClusterName);
+            _provider.Setup(provider => provider.LockAsync(_clusterInformation.ClusterName))
+                .ReturnsAsync(new LockReference(false));
 
             //Act
             _sut.Start();
 
-            _provider.Raise(provider => provider.LockReleased += null, eventArgs);
-
             //Assert
-            _provider.Verify(provider => provider.Lock(_clusterInformation.ClusterName, _clusterInformation.HostName));
+            _sut.IsMaster.Should().BeFalse();
         }
 
         [Test]
@@ -78,8 +74,10 @@ namespace Minilock.Tests
         {
             //Arrange
 
-            _provider.Setup(provider => provider.Lock(_clusterInformation.ClusterName, _clusterInformation.HostName))
-                .Returns(true);
+            var lockReference = new LockReference(true); 
+
+            _provider.Setup(provider => provider.LockAsync(_clusterInformation.ClusterName))
+                .ReturnsAsync(lockReference);
             
             _sut.Start();
 
@@ -88,7 +86,7 @@ namespace Minilock.Tests
 
             //Assert
             _provider.Verify(provider =>
-                provider.Unlock(_clusterInformation.ClusterName, _clusterInformation.HostName));
+                provider.Unlock(lockReference));
         }
     }
 }

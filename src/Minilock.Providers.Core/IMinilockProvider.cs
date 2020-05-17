@@ -1,13 +1,12 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace Minilock.Providers.Core
 {
-    public interface IMinilockProvider
+    public interface IMinilockProvider : IDisposable
     {
-        bool Lock(string clusterName, string hostName);
+        Task<LockReference> LockAsync(string clusterName);
         
-        void Unlock(string clusterInformationClusterName, string hostName);
-        
-        event EventHandler<LockReleasedEventArgs> LockReleased;
+        void Unlock(LockReference lockReference);
     }
 }

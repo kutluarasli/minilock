@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Minilock.Abstractions;
 using Minilock.Providers.Core;
 
@@ -12,22 +13,10 @@ namespace Minilock
         public event EventHandler<ClusterStatusChangedArgs> ClusterStatusChanged;
         
         // Fields & Properties
-        private bool _isMaster;
+        public bool IsMaster => _lockReference?.LockAcquired == true;
+        private LockReference _lockReference;
         public ClusterInformation ClusterInformation { get; }
 
-        public bool IsMaster
-        {
-            get => _isMaster;
-            private set
-            {
-                if (value != _isMaster)
-                {
-                    _isMaster = value;
-                    ClusterStatusChanged?.Invoke(this, new ClusterStatusChangedArgs(_isMaster));
-                }
-            }
-        }
-        
         public MinilockClusterCoordinator(IMinilockProvider provider, ClusterInformation clusterInformation)
         {
             _provider = provider;
@@ -35,27 +24,26 @@ namespace Minilock
             ClusterInformation = clusterInformation;
         }
 
-        public void Start()
+        public async Task Start()
         {
-            _provider.LockReleased += OnLockReleased;
-
-            ClaimMasterRole();
-        }
-
-        private void ClaimMasterRole()
-        {
-            IsMaster = _provider.Lock(ClusterInformation.ClusterName, ClusterInformation.HostName);
-        }
-
-        private void OnLockReleased(object sender, LockReleasedEventArgs args)
-        {
-            ClaimMasterRole();
+            _lockReference = await _provider.LockAsync(ClusterInformation.ClusterName);
+            if (_lockReference.LockAcquired)
+            {
+                ClusterStatusChanged?.Invoke(this, new ClusterStatusChangedArgs(_lockReference.LockAcquired));
+            }
         }
 
         public void Close()
         {
-            _provider.LockReleased -= OnLockReleased;
-            _provider.Unlock(ClusterInformation.ClusterName, ClusterInformation.HostName);
+            if (_lockReference.LockAcquired)
+            {
+                _provider.Unlock(_lockReference);
+            }
+        }
+
+        public void Dispose()
+        {
+            _provider?.Dispose();
         }
     }
 }

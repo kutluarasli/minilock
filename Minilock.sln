@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Minilock.Tests", "src\Minil
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Minilock.Providers.Core", "src\Minilock.Providers.Core\Minilock.Providers.Core.csproj", "{BB3D369B-BEF8-472A-80AC-E5F1BF06C6E0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Minilock.Providers.Redis", "src\Minilock.Providers.Redis\Minilock.Providers.Redis.csproj", "{91A059B5-0AF7-4391-BA0E-453002F53EE0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{BB3D369B-BEF8-472A-80AC-E5F1BF06C6E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BB3D369B-BEF8-472A-80AC-E5F1BF06C6E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BB3D369B-BEF8-472A-80AC-E5F1BF06C6E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91A059B5-0AF7-4391-BA0E-453002F53EE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91A059B5-0AF7-4391-BA0E-453002F53EE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91A059B5-0AF7-4391-BA0E-453002F53EE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91A059B5-0AF7-4391-BA0E-453002F53EE0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

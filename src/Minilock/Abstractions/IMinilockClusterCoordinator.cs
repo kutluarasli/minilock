@@ -1,8 +1,11 @@
-﻿namespace Minilock.Abstractions
+﻿using System;
+using System.Threading.Tasks;
+
+namespace Minilock.Abstractions
 {
-    public interface IMinilockClusterCoordinator
+    public interface IMinilockClusterCoordinator : IDisposable
     {
-        void Start();
+        Task Start();
         void Close();
         ClusterInformation ClusterInformation { get; }
     }
