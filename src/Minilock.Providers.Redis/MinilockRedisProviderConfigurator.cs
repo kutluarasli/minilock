@@ -10,13 +10,14 @@ namespace Minilock.Providers.Redis
     {
         private readonly IList<RedisInstance> _redisInstances;
 
-        public IReadOnlyCollection<RedisInstance> RedisInstances =>
+        private IReadOnlyCollection<RedisInstance> RedisInstances =>
             new ReadOnlyCollection<RedisInstance>(_redisInstances);
 
-        public bool HasRedisInstance => _redisInstances.Any();
-        public TimeSpan WaitTime { get; set; } = new TimeSpan(0, 0, 1);
-        public TimeSpan RetryTime { get; set; } = new TimeSpan(0, 0, 0);
-        public CancellationToken? CancellationToken { get; set; }
+        private bool HasRedisInstance => _redisInstances.Any();
+        private TimeSpan WaitTime { get; set; } = new TimeSpan(0, 0, 1);
+        private TimeSpan RetryTime { get; set; } = new TimeSpan(0, 0, 0);
+        private CancellationToken? CancellationToken { get; set; }
+        private TimeSpan LockDuration { get; set; } = new TimeSpan(1,0,0);
 
         public MinilockRedisProviderConfigurator()
         {
@@ -47,6 +48,13 @@ namespace Minilock.Providers.Redis
             return this;
         }
 
+        public MinilockRedisProviderConfigurator WithLockDuration(TimeSpan duration)
+        {
+            LockDuration = duration;
+            return this;
+        }
+
+        
         internal MinilockRedisConfiguration Build()
         {
             if (!HasRedisInstance)
@@ -59,7 +67,8 @@ namespace Minilock.Providers.Redis
                 RedisInstances = RedisInstances,
                 WaitTime = WaitTime,
                 RetryTime = RetryTime,
-                CancellationToken = CancellationToken
+                CancellationToken = CancellationToken,
+                LockDuration = LockDuration
             };
             return result;
         }

@@ -35,7 +35,7 @@ namespace Minilock
 
         public void Close()
         {
-            if (_lockReference.LockAcquired)
+            if (_lockReference?.LockAcquired == true)
             {
                 _provider.Unlock(_lockReference);
             }

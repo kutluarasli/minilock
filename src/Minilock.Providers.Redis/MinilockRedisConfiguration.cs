@@ -10,6 +10,7 @@ namespace Minilock.Providers.Redis
         public TimeSpan WaitTime { get; set; }
         public TimeSpan RetryTime { get; set; }
         public CancellationToken? CancellationToken { get; set; }
+        public TimeSpan LockDuration { get; set; }
 
         public bool CancellationRequested => CancellationToken?.IsCancellationRequested == true;
     }

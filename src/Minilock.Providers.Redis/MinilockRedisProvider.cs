@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Minilock.Providers.Core;
 using RedLockNet;
 using RedLockNet.SERedis;
@@ -11,32 +12,37 @@ namespace Minilock.Providers.Redis
 {
     public class MinilockRedisProvider : IMinilockProvider
     {
+        private readonly ILoggerFactory _loggerFactory;
         private readonly MinilockRedisConfiguration _configuration;
         private readonly RedLockFactory _redLockFactory;
         
-        public MinilockRedisProvider(MinilockRedisProviderConfigurator configurator)
+        public MinilockRedisProvider(MinilockRedisProviderConfigurator configurator, ILoggerFactory loggerFactory = null)
         {
             if (configurator == null)
             {
                 throw new ArgumentNullException(nameof(configurator));
             }
 
-            _configuration = configurator.Build();
+            _loggerFactory = loggerFactory;
 
-            _redLockFactory = InitializeRedLockFactory(_configuration);
+            _configuration = configurator.Build();
+            
+            _redLockFactory = InitializeRedLockFactory(_configuration, loggerFactory);
         }
         
-        private static RedLockFactory InitializeRedLockFactory(MinilockRedisConfiguration configuration)
+        private static RedLockFactory InitializeRedLockFactory(MinilockRedisConfiguration configuration, ILoggerFactory loggerFactory)
         {
             var endpoints = configuration
                 .RedisInstances
                 .Select(redisInstance => new RedLockEndPoint(new DnsEndPoint(redisInstance.Address, redisInstance.Port))
                 {
-                    Password = redisInstance.AuthKey
+                    Password = redisInstance.AuthKey,
+                    RedisDatabase = 0,
+                    RedisKeyFormat = "minilock:{0}",
                 })
                 .ToList();
-                
-            var redLockFactory = RedLockFactory.Create(endpoints);
+
+            var redLockFactory = RedLockFactory.Create(endpoints, loggerFactory);
             return redLockFactory;
         }
         
@@ -46,13 +52,13 @@ namespace Minilock.Providers.Redis
             do
             {
                 redLock = await _redLockFactory.CreateLockAsync(clusterName, 
-                    TimeSpan.MaxValue,
+                    _configuration.LockDuration,
                     _configuration.WaitTime,
                     _configuration.RetryTime,
                     _configuration.CancellationToken);
                 
             } while (!redLock.IsAcquired && !_configuration.CancellationRequested);
-
+            
             return new RedLockReference(redLock);
         }
 
