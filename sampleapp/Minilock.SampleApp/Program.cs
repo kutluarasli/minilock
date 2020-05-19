@@ -30,12 +30,11 @@ namespace Minilock.SampleApp
                 .AddRedisInstance(new RedisInstance("localhost"))
                 .WithLockDuration(TimeSpan.FromMinutes(1));
             var redisProvider = new MinilockRedisProvider(redisProviderConfigurator);
-            var minilockCoordinatorFactory = new MinilockClusterCoordinatorFactory(redisProvider);
-            var minilockCoordinator =
-                minilockCoordinatorFactory.CreateCoordinator(new ClusterInformation("test-cluster", "host-1"));
+            var minilockClusterStatusTrackerFactory = new MinilockClusterStatusTrackerFactory(redisProvider);
+            var minilockClusterStatusTracker =
+                minilockClusterStatusTrackerFactory.CreateStatusTracker(new ClusterInformation("test-cluster", "host-1"));
 
-            serviceCollection.AddSingleton(provider => minilockCoordinator as IMinilockClusterStatusTracker);
-            serviceCollection.AddSingleton(provider => minilockCoordinator);
+            serviceCollection.AddSingleton(provider => minilockClusterStatusTracker);
         }
     }
 }

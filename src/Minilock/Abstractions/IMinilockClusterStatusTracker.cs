@@ -1,7 +1,17 @@
-﻿namespace Minilock.Abstractions
+﻿using System;
+
+namespace Minilock.Abstractions
 {
-    public interface IMinilockClusterStatusTracker
+    public interface IMinilockClusterStatusTracker : IDisposable
     {
-        public bool IsMaster { get; }
+        bool IsMaster { get; }
+
+        void Watch(int pollingInterval = 100);
+        
+        void Close();
+        
+        ClusterInformation ClusterInformation { get; }
+
+        event EventHandler<ClusterStatusChangedArgs> ClusterStatusChanged;
     }
 }

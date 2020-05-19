@@ -15,13 +15,12 @@ namespace Minilock.SampleApp
             _minilockClusterStatusTracker = minilockClusterStatusTracker;
         }
         
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            while (!stoppingToken.IsCancellationRequested)
-            {
-                Console.WriteLine($"Status is IsMaster={_minilockClusterStatusTracker.IsMaster}");
-                await Task.Delay(1000);
-            }
+            _minilockClusterStatusTracker.ClusterStatusChanged += (sender, args) =>
+                Console.WriteLine($"Status is IsMaster={args.IsMaster}");
+            
+            return Task.CompletedTask;
         }
     }
 }

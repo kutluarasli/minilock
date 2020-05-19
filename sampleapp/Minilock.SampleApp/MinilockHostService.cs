@@ -8,13 +8,13 @@ namespace Minilock.SampleApp
     public class MinilockHostService : IHostedService
     {
         private readonly IHostApplicationLifetime _appLifetime;
-        private readonly IMinilockClusterCoordinator _minilockClusterCoordinator;
+        private readonly IMinilockClusterStatusTracker _minilockClusterStatusTracker;
 
         public MinilockHostService(IHostApplicationLifetime appLifetime,
-            IMinilockClusterCoordinator minilockClusterCoordinator)
+            IMinilockClusterStatusTracker minilockClusterStatusTracker)
         {
             _appLifetime = appLifetime;
-            _minilockClusterCoordinator = minilockClusterCoordinator;
+            _minilockClusterStatusTracker = minilockClusterStatusTracker;
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -26,12 +26,12 @@ namespace Minilock.SampleApp
 
         private void OnStarted()
         {
-            _minilockClusterCoordinator.Start();
+            _minilockClusterStatusTracker.Watch();
         }
 
         private void OnStopping()
         {
-            _minilockClusterCoordinator.Close();
+            _minilockClusterStatusTracker.Close();
         }
 
         public Task StopAsync(CancellationToken cancellationToken)

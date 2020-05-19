@@ -6,9 +6,9 @@ using NUnit.Framework;
 
 namespace Minilock.Tests
 {
-    public class MinilockClusterCoordinatorTests
+    public class MinilockClusterStatusTrackerTests
     {
-        private MinilockClusterCoordinator _sut;
+        private MinilockClusterStatusTracker _sut;
         private Mock<IMinilockProvider> _provider;
         private Fixture _fixture;
         private ClusterInformation _clusterInformation;
@@ -19,7 +19,7 @@ namespace Minilock.Tests
             _fixture = new Fixture();
             _provider = new Mock<IMinilockProvider>();
             _clusterInformation = _fixture.Create<ClusterInformation>();
-            _sut = new MinilockClusterCoordinator(_provider.Object, _clusterInformation);
+            _sut = new MinilockClusterStatusTracker(_provider.Object, _clusterInformation);
         }
 
         [Test]
@@ -31,30 +31,12 @@ namespace Minilock.Tests
                 .ReturnsAsync(new LockReference(true));
 
             //Act
-            _sut.Start();
+            _sut.Claim();
 
             //Assert
             _sut.IsMaster.Should().BeTrue();
         }
-        
-        [Test]
-        public void It_Should_Notify_When_ClusterStatusChanged()
-        {
-            //Arrange
-
-            var isNotified = false;
-
-            _provider.Setup(provider => provider.LockAsync(_clusterInformation.ClusterName))
-                .ReturnsAsync(new LockReference(true));
-
-            //Act
-            _sut.ClusterStatusChanged += (sender, args) => isNotified = true;
-            _sut.Start();
-
-            //Assert
-            isNotified.Should().BeTrue();
-        }
-
+      
         [Test]
         public void It_Should_Remain_SlaveRole_When_Lock_Is_Not_Available()
         {
@@ -63,7 +45,7 @@ namespace Minilock.Tests
                 .ReturnsAsync(new LockReference(false));
 
             //Act
-            _sut.Start();
+            _sut.Claim();
 
             //Assert
             _sut.IsMaster.Should().BeFalse();
@@ -79,7 +61,7 @@ namespace Minilock.Tests
             _provider.Setup(provider => provider.LockAsync(_clusterInformation.ClusterName))
                 .ReturnsAsync(lockReference);
             
-            _sut.Start();
+            _sut.Claim();
 
             //Act
             _sut.Close();
@@ -87,6 +69,50 @@ namespace Minilock.Tests
             //Assert
             _provider.Verify(provider =>
                 provider.Unlock(lockReference));
+        }
+        
+        [Test]
+        public void It_Should_Notify_When_ClusterStatusChanged_FromSlave_ToMaster()
+        {
+            //Arrange
+            var isMaster = false;
+
+            _provider.Setup(provider => provider.LockAsync(_clusterInformation.ClusterName))
+                .ReturnsAsync(new LockReference(true));
+            
+            _sut.ClusterStatusChanged += (sender, args) => isMaster = args.IsMaster;
+            
+            //Act
+            
+            _sut.Watch();
+            _sut.CheckStatus();
+
+            //Assert
+            isMaster.Should().BeTrue();
+        }
+        
+        [Test]
+        public void It_Should_Notify_When_ClusterStatusChanged_FromMaster_ToSlave()
+        {
+            //Arrange
+            var isMaster = false;
+
+            _provider.Setup(provider => provider.LockAsync(_clusterInformation.ClusterName))
+                .ReturnsAsync(new LockReference(true));
+            
+            _sut.CheckStatus();
+            
+            _provider.Setup(provider => provider.LockAsync(_clusterInformation.ClusterName))
+                .ReturnsAsync(new LockReference(false));
+            
+            _sut.ClusterStatusChanged += (sender, args) => isMaster = args.IsMaster;
+            
+            //Act
+            _sut.Watch();
+            _sut.CheckStatus();
+
+            //Assert
+            isMaster.Should().BeFalse();
         }
     }
 }

@@ -7,23 +7,23 @@ using NUnit.Framework;
 
 namespace Minilock.Tests
 {
-    public class MinilockClusterCoordinatorFactoryTests
+    public class MinilockClusterStatusTrackerFactoryTests
     {
 
         private Fixture _fixture;
         private Mock<IMinilockProvider> _provider;
-        private MinilockClusterCoordinatorFactory _sut;
+        private MinilockClusterStatusTrackerFactory _sut;
 
         [SetUp]
         public void Setup()
         {
             _fixture = new Fixture();
             _provider = new Mock<IMinilockProvider>();
-            _sut = new MinilockClusterCoordinatorFactory(_provider.Object);
+            _sut = new MinilockClusterStatusTrackerFactory(_provider.Object);
         }
 
         [Test]
-        public void Given_ClusterInformation_It_Should_Create_Cluster_Coordinator()
+        public void Given_ClusterInformation_It_Should_Create_Cluster_StatusTracker()
         {
             //Arrange
 
@@ -32,7 +32,7 @@ namespace Minilock.Tests
             var clusterInformation = new ClusterInformation(clusterName, hostName);
 
             //Act
-            var result =  _sut.CreateCoordinator(clusterInformation);
+            var result =  _sut.CreateStatusTracker(clusterInformation);
 
             //Assert
             result.Should().NotBeNull();
@@ -43,7 +43,7 @@ namespace Minilock.Tests
         [Test]
         public void It_Should_Throw_ArgumentNullException_When_GivenClusterInformationIsNull()
         {
-            Assert.Throws<ArgumentNullException>(() => _sut.CreateCoordinator(null));  
+            Assert.Throws<ArgumentNullException>(() => _sut.CreateStatusTracker(null));  
         }
     }
 }
