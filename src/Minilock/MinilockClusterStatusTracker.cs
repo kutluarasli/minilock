@@ -36,7 +36,7 @@ namespace Minilock
             InitStatusTrackingTimer(pollingInterval);
         }
 
-        private async Task Claim()
+        internal async Task Claim()
         {
             _lockReference = await _provider.LockAsync(ClusterInformation.ClusterName);
         }

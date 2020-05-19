@@ -31,7 +31,7 @@ namespace Minilock.Tests
                 .ReturnsAsync(new LockReference(true));
 
             //Act
-            _sut.Claim();
+            _sut.Claim().Wait();
 
             //Assert
             _sut.IsMaster.Should().BeTrue();
@@ -45,7 +45,7 @@ namespace Minilock.Tests
                 .ReturnsAsync(new LockReference(false));
 
             //Act
-            _sut.Claim();
+            _sut.Claim().Wait();
 
             //Assert
             _sut.IsMaster.Should().BeFalse();
@@ -60,8 +60,8 @@ namespace Minilock.Tests
 
             _provider.Setup(provider => provider.LockAsync(_clusterInformation.ClusterName))
                 .ReturnsAsync(lockReference);
-            
-            _sut.Claim();
+
+            _sut.Claim().Wait();
 
             //Act
             _sut.Close();
