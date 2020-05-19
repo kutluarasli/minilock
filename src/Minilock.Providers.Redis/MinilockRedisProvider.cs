@@ -12,7 +12,6 @@ namespace Minilock.Providers.Redis
 {
     public class MinilockRedisProvider : IMinilockProvider
     {
-        private readonly ILoggerFactory _loggerFactory;
         private readonly MinilockRedisConfiguration _configuration;
         private readonly RedLockFactory _redLockFactory;
         
@@ -22,8 +21,6 @@ namespace Minilock.Providers.Redis
             {
                 throw new ArgumentNullException(nameof(configurator));
             }
-
-            _loggerFactory = loggerFactory;
 
             _configuration = configurator.Build();
             
