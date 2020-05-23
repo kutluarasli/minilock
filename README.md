@@ -33,3 +33,8 @@ Provider depends on external RedLock.Net library. https://github.com/samcook/Red
 
 For more information, please check /sampleapp. 
 
+**Nuget Packages**
+
+https://www.nuget.org/packages/Minilock/
+https://www.nuget.org/packages/Minilock.Providers.Redis/
+
