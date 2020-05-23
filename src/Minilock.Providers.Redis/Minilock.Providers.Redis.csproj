@@ -2,6 +2,12 @@
 
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
+        <PackageId>Minilock.Providers.Redis</PackageId>
+        <Version>1.0.0</Version>
+        <Authors>Kutlu Araslı</Authors>
+        <Title>Minilock Redis provider</Title>
+        <Description>Redis provider implementation for Minilock library</Description>
+        <RepositoryUrl>https://github.com/kutluarasli/minilock</RepositoryUrl>
     </PropertyGroup>
 
     <ItemGroup>
