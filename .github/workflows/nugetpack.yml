@@ -1,0 +1,39 @@
+name: publish to nuget
+on:
+  release:
+    types: [created]
+jobs:
+  publish:
+    name: Minilock core build, pack & publish
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      # - name: Setup dotnet
+      #   uses: actions/setup-dotnet@v1
+      #   with:
+      #     dotnet-version: 3.1.200
+
+
+      - name: publish providers code
+        id: publish_providers_core
+        uses: rohith/publish-nuget@v2
+        with:
+          PROJECT_FILE_PATH: src/Minilock.Providers.Core/Minilock.Providers.Core.csproj
+          NUGET_KEY: ${{secrets.NUGETKEY}}
+
+
+      - name: publish providers code
+        id: publish_core
+        uses: rohith/publish-nuget@v2
+        with:
+          PROJECT_FILE_PATH: src/Minilock/Minilock.csproj
+          NUGET_KEY: ${{secrets.NUGETKEY}}
+
+
+      - name: publish redis provider
+        id: publish_redis_provider
+        uses: rohith/publish-nuget@v2
+        with:
+          PROJECT_FILE_PATH: src/Minilock.Providers.Redis/Minilock.Providers.Redis.csproj
+          NUGET_KEY: ${{secrets.NUGETKEY}}
