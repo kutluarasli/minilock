@@ -1,4 +1,4 @@
-name: .NET Core
+name: Trunk build action on change
 
 on:
   push:
