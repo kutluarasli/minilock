@@ -1,13 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
-    
-    <PropertyGroup>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
-        <PackageId>Minilock.Providers.Core</PackageId>
-        <Version>1.0.0</Version>
-        <Authors>Kutlu Araslı</Authors>
-        <Title>Minilock providers module extension</Title>
-        <Description>Core package which is required to create new provider implementations for Minilock</Description>
-        <RepositoryUrl>https://github.com/kutluarasli/minilock</RepositoryUrl>
-    </PropertyGroup>
+
+	<PropertyGroup>
+		<TargetFramework>netcoreapp3.1</TargetFramework>
+		<PackageId>Minilock.Providers.Core</PackageId>
+		<Version>1.0.0</Version>
+		<Authors>Kutlu Araslı</Authors>
+		<Title>Minilock providers module extension</Title>
+		<Description>Core package which is required to create new provider implementations for Minilock</Description>
+		<RepositoryUrl>https://github.com/kutluarasli/minilock</RepositoryUrl>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
 
 </Project>

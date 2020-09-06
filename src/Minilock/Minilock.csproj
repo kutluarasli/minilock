@@ -1,17 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
-        <PackageId>Minilock</PackageId>
-        <Version>1.0.0</Version>
-        <Authors>Kutlu Araslı</Authors>
-        <Title>Minilock leader selection library</Title>
-        <Description>Minilock is a minimalist library to create mutual exclusions in a distributed systems. Minilock itself aims to solve the problem where leader node is required.</Description>
-        <RepositoryUrl>https://github.com/kutluarasli/minilock</RepositoryUrl>
-    </PropertyGroup>
-    
-    <ItemGroup>
-      <ProjectReference Include="..\Minilock.Providers.Core\Minilock.Providers.Core.csproj" />
-    </ItemGroup>
+	<PropertyGroup>
+		<TargetFramework>netcoreapp3.1</TargetFramework>
+		<PackageId>Minilock</PackageId>
+		<Version>1.0.0</Version>
+		<Authors>Kutlu Araslı</Authors>
+		<Title>Minilock leader selection library</Title>
+		<Description>Minilock is a minimalist library to create mutual exclusions in a distributed systems. Minilock itself aims to solve the problem where leader node is required.</Description>
+		<RepositoryUrl>https://github.com/kutluarasli/minilock</RepositoryUrl>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Minilock.Providers.Core\Minilock.Providers.Core.csproj" />
+	</ItemGroup>
 
 </Project>

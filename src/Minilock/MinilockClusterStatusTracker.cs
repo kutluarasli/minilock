@@ -13,7 +13,7 @@ namespace Minilock
         
         // Fields 
         private bool _wasMaster;
-        private Timer _statusTrackingTimer;
+        private Timer? _statusTrackingTimer;
         private LockReference _lockReference;
         
         // Properties 
@@ -21,7 +21,7 @@ namespace Minilock
         public bool IsMaster => _lockReference.LockAcquired;
         
         //Events
-        public event EventHandler<ClusterStatusChangedArgs> ClusterStatusChanged;
+        public event EventHandler<ClusterStatusChangedArgs>? ClusterStatusChanged;
 
         public MinilockClusterStatusTracker(IMinilockProvider provider, ClusterInformation clusterInformation)
         {

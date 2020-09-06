@@ -7,8 +7,8 @@ namespace Minilock.Tests
 {
     public class ClusterInformationTests
     {
-        private Fixture _fixture;
-        private ClusterInformation _sut;
+        private Fixture? _fixture;
+        private ClusterInformation? _sut;
 
         [SetUp]
         public void Setup()
