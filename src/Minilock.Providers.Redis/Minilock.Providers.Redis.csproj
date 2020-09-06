@@ -8,6 +8,7 @@
         <Title>Minilock Redis provider</Title>
         <Description>Redis provider implementation for Minilock library</Description>
         <RepositoryUrl>https://github.com/kutluarasli/minilock</RepositoryUrl>
+		<Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>

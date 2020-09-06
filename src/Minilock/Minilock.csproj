@@ -8,6 +8,7 @@
         <Title>Minilock leader selection library</Title>
         <Description>Minilock is a minimalist library to create mutual exclusions in a distributed systems. Minilock itself aims to solve the problem where leader node is required.</Description>
         <RepositoryUrl>https://github.com/kutluarasli/minilock</RepositoryUrl>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
     
     <ItemGroup>

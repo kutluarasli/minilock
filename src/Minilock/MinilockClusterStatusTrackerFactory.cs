@@ -13,7 +13,7 @@ namespace Minilock
             _provider = provider;
         }
 
-        public IMinilockClusterStatusTracker CreateStatusTracker(ClusterInformation clusterInformation)
+        public IMinilockClusterStatusTracker CreateStatusTracker(ClusterInformation? clusterInformation)
         {
             if (clusterInformation == null)
             {

@@ -8,6 +8,7 @@
         <Title>Minilock providers module extension</Title>
         <Description>Core package which is required to create new provider implementations for Minilock</Description>
         <RepositoryUrl>https://github.com/kutluarasli/minilock</RepositoryUrl>
+		<Nullable>enable</Nullable>
     </PropertyGroup>
 
 </Project>

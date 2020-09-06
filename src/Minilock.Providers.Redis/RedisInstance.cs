@@ -6,11 +6,11 @@ namespace Minilock.Providers.Redis
     {
         public string Address { get; }
         public int Port { get; }
-        public string AuthKey { get;}
+        public string? AuthKey { get; }
         
         public string FullAddress =>  $"{Address}:{Port}";
 
-        public RedisInstance(string address, int port = 6379, string authKey = null)
+        public RedisInstance(string address, int port = 6379, string? authKey = null)
         {
             if (string.IsNullOrWhiteSpace(address))
             {

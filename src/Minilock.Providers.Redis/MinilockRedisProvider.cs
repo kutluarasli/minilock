@@ -15,7 +15,7 @@ namespace Minilock.Providers.Redis
         private readonly MinilockRedisConfiguration _configuration;
         private readonly RedLockFactory _redLockFactory;
         
-        public MinilockRedisProvider(MinilockRedisProviderConfigurator configurator, ILoggerFactory loggerFactory = null)
+        public MinilockRedisProvider(MinilockRedisProviderConfigurator configurator, ILoggerFactory? loggerFactory = null)
         {
             if (configurator == null)
             {
@@ -27,7 +27,7 @@ namespace Minilock.Providers.Redis
             _redLockFactory = InitializeRedLockFactory(_configuration, loggerFactory);
         }
         
-        private static RedLockFactory InitializeRedLockFactory(MinilockRedisConfiguration configuration, ILoggerFactory loggerFactory)
+        private static RedLockFactory InitializeRedLockFactory(MinilockRedisConfiguration configuration, ILoggerFactory? loggerFactory)
         {
             var endpoints = configuration
                 .RedisInstances

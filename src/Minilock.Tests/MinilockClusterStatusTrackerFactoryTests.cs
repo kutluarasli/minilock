@@ -10,9 +10,9 @@ namespace Minilock.Tests
     public class MinilockClusterStatusTrackerFactoryTests
     {
 
-        private Fixture _fixture;
-        private Mock<IMinilockProvider> _provider;
-        private MinilockClusterStatusTrackerFactory _sut;
+        private Fixture? _fixture;
+        private Mock<IMinilockProvider>? _provider;
+        private MinilockClusterStatusTrackerFactory? _sut;
 
         [SetUp]
         public void Setup()
@@ -32,7 +32,7 @@ namespace Minilock.Tests
             var clusterInformation = new ClusterInformation(clusterName, hostName);
 
             //Act
-            var result =  _sut.CreateStatusTracker(clusterInformation);
+            var result =  _sut!.CreateStatusTracker(clusterInformation);
 
             //Assert
             result.Should().NotBeNull();
@@ -43,7 +43,7 @@ namespace Minilock.Tests
         [Test]
         public void It_Should_Throw_ArgumentNullException_When_GivenClusterInformationIsNull()
         {
-            Assert.Throws<ArgumentNullException>(() => _sut.CreateStatusTracker(null));  
+            Assert.Throws<ArgumentNullException>(() => _sut!.CreateStatusTracker(null));  
         }
     }
 }

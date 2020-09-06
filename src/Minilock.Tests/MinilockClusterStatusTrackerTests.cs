@@ -8,10 +8,10 @@ namespace Minilock.Tests
 {
     public class MinilockClusterStatusTrackerTests
     {
-        private MinilockClusterStatusTracker _sut;
-        private Mock<IMinilockProvider> _provider;
-        private Fixture _fixture;
-        private ClusterInformation _clusterInformation;
+        private MinilockClusterStatusTracker? _sut;
+        private Mock<IMinilockProvider>? _provider;
+        private Fixture? _fixture;
+        private ClusterInformation? _clusterInformation;
 
         [SetUp]
         public void Setup()
@@ -27,25 +27,25 @@ namespace Minilock.Tests
         {
             //Arrange
 
-            _provider.Setup(provider => provider.LockAsync(_clusterInformation.ClusterName))
+            _provider!.Setup(provider => provider.LockAsync(_clusterInformation!.ClusterName))
                 .ReturnsAsync(new LockReference(true));
 
             //Act
-            _sut.Claim().Wait();
+            _sut!.Claim().Wait();
 
             //Assert
-            _sut.IsMaster.Should().BeTrue();
+            _sut!.IsMaster.Should().BeTrue();
         }
       
         [Test]
         public void It_Should_Remain_SlaveRole_When_Lock_Is_Not_Available()
         {
             //Arrange
-            _provider.Setup(provider => provider.LockAsync(_clusterInformation.ClusterName))
+            _provider!.Setup(provider => provider.LockAsync(_clusterInformation!.ClusterName))
                 .ReturnsAsync(new LockReference(false));
 
             //Act
-            _sut.Claim().Wait();
+            _sut!.Claim().Wait();
 
             //Assert
             _sut.IsMaster.Should().BeFalse();
@@ -58,10 +58,10 @@ namespace Minilock.Tests
 
             var lockReference = new LockReference(true); 
 
-            _provider.Setup(provider => provider.LockAsync(_clusterInformation.ClusterName))
+            _provider!.Setup(provider => provider.LockAsync(_clusterInformation!.ClusterName))
                 .ReturnsAsync(lockReference);
 
-            _sut.Claim().Wait();
+            _sut!.Claim().Wait();
 
             //Act
             _sut.Close();
@@ -77,10 +77,10 @@ namespace Minilock.Tests
             //Arrange
             var isMaster = false;
 
-            _provider.Setup(provider => provider.LockAsync(_clusterInformation.ClusterName))
+            _provider!.Setup(provider => provider.LockAsync(_clusterInformation!.ClusterName))
                 .ReturnsAsync(new LockReference(true));
             
-            _sut.ClusterStatusChanged += (sender, args) => isMaster = args.IsMaster;
+            _sut!.ClusterStatusChanged += (sender, args) => isMaster = args.IsMaster;
             
             //Act
             
@@ -97,12 +97,12 @@ namespace Minilock.Tests
             //Arrange
             var isMaster = false;
 
-            _provider.Setup(provider => provider.LockAsync(_clusterInformation.ClusterName))
+            _provider!.Setup(provider => provider.LockAsync(_clusterInformation!.ClusterName))
                 .ReturnsAsync(new LockReference(true));
             
-            _sut.CheckStatus();
+            _sut!.CheckStatus();
             
-            _provider.Setup(provider => provider.LockAsync(_clusterInformation.ClusterName))
+            _provider.Setup(provider => provider.LockAsync(_clusterInformation!.ClusterName))
                 .ReturnsAsync(new LockReference(false));
             
             _sut.ClusterStatusChanged += (sender, args) => isMaster = args.IsMaster;

@@ -8,7 +8,7 @@ namespace Minilock
         public string ClusterName { get; }
         public string HostName { get; }
         
-        public ClusterInformation([NotNull] string clusterName, [NotNull] string hostName)
+        public ClusterInformation(string clusterName, string hostName)
         {
             if (string.IsNullOrWhiteSpace(clusterName))
             {

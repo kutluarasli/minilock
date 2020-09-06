@@ -6,7 +6,7 @@ namespace Minilock.Providers.Redis
 {
     internal class MinilockRedisConfiguration
     {
-        public IReadOnlyCollection<RedisInstance> RedisInstances { get; set; }
+        public IReadOnlyCollection<RedisInstance>? RedisInstances { get; set; }
         public TimeSpan WaitTime { get; set; }
         public TimeSpan RetryTime { get; set; }
         public CancellationToken? CancellationToken { get; set; }
